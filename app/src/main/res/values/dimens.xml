@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="image_height">200dp</dimen>
+    <dimen name="logo_width">198dp</dimen>
+    <dimen name="logo_height">139dp</dimen>
+    <dimen name="logo_marginStart">104dp</dimen>
+    <dimen name="logo_marginTop">128dp</dimen>
+    <dimen name="first_name_margin_top">10dp</dimen>
+    <dimen name="edit_text_margin_horizontal">16dp</dimen>
+    <dimen name="edit_text_margin_top">20dp</dimen>
+    <dimen name="footer_margin_bottom">12dp</dimen>
+    <dimen name="login_button_margin_top">25dp</dimen>
+    <dimen name="signup_button_margin_top">20dp</dimen>
+    <dimen name="footer_text_size">16sp</dimen>
+</resources>
