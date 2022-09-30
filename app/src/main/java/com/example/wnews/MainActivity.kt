@@ -1,19 +1,19 @@
 package com.example.wnews
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import MainViewModel
 import android.content.Intent
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.wnews.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var mainViewModel : MainViewModel
-    private lateinit var binding : ActivityMainBinding
+    private lateinit var mainViewModel: MainViewModel
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        binding= ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
@@ -22,67 +22,62 @@ class MainActivity : AppCompatActivity() {
         binding.apply {
 
 
-            loginButton.setOnClickListener{
-                println("user:"+ loadData())
+            loginButton.setOnClickListener {
                 val firstNameInput = firstName.editableText.toString()
-                val secondNameInput= secondName.editableText.toString()
+                val secondNameInput = secondName.editableText.toString()
 
                 mainViewModel.setLogin(firstNameInput, secondNameInput)
 
-                if(loginValidation(firstNameInput, secondNameInput)){
-                    // fun save userData()
-                    val intent = Intent(this@MainActivity, HomeActivity::class.java)
+                mainViewModel.validateFirstName(firstNameInput)
 
-                    startActivity(intent)
-                }
-            }
-            fun initHome(){
-                loginButton.setOnClickListener { mainViewModel.setLogin(firstName =String(), secondName =String()) }
-            }
+                mainViewModel.validateSecondName(secondNameInput)
 
+                mainViewModel.successValidations()
+
+
+            }
         }
 
         setObserve()
 
     }
 
-    fun loginValidation(firstNameInput: String, secondNameInput: String): Boolean{
-        if(firstNameInput.isEmpty()) {
-            binding.firstName.error = "This field cannot be empty."
-            return false
+    fun setObserve() {
+        mainViewModel.errorFirstName.observe(this) {
+            if (it) {
+                binding.firstName.error = getString(R.string.empty_validation)
+            }
         }
 
-        if (firstNameInput.isNotEmpty() && !firstNameInput.contains("@")) {
-            binding.firstName.error = "Please, enter a valid email."
-            return false
+        mainViewModel.errorSecondName.observe(this) {
+            if (it) {
+                binding.secondName.error = getString(R.string.empty_validation)
+            }
         }
 
-        if(secondNameInput.isEmpty()) {
-            binding.secondName.error = "This field cannot be empty."
-            return false
+        mainViewModel.valditionsResult.observe(this) {
+            if (it) {
+                saveData(
+                    binding.firstName.editableText.toString(),
+                    binding.secondName.editableText.toString()
+                )
+                with(Intent(this, HomeActivity::class.java)) {
+                    startActivity(this)
+
+                }
+
+                finish()
+            }
         }
-        return true
+
     }
 
 
-
-    fun setObserve(){
-        mainViewModel.newLoginModel.observe(this@MainActivity) { model->
-            println(model.firstName)
-        }
-    }
-
-
-    private val SHARED_PREFS = "sharedPrefs"
-    private val KEY_EMAIL = "keyEmail"
-    private val PASSWORD = "password"
-
-
-    fun saveData(firstName: String, secondName:String) {
+    fun saveData(firstName: String, secondName: String) {
         val sharedPreferences = this.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
         val editor = sharedPreferences.edit()
-        editor.putString(KEY_EMAIL , firstName)
-        editor.putString(PASSWORD , secondName)
+        editor.putString(KEY_EMAIL, firstName)
+        editor.putString(PASSWORD, secondName)
 
         editor.apply()
     }
@@ -99,8 +94,11 @@ class MainActivity : AppCompatActivity() {
         return sharedPreferences.getString(PASSWORD, "")
     }
 
-
-
+    companion object {
+        private val SHARED_PREFS = "sharedPrefs"
+        private val KEY_EMAIL = "keyEmail"
+        private val PASSWORD = "password"
+    }
 
 
 }
