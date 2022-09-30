@@ -5,4 +5,6 @@
     <string name="login_button">LOG IN</string>
     <string name="signup_button">SIGN UP</string>
     <string name="tyc">By joining you agree to our Terms y Conditions</string>
+    <string name="empty_validation">This field cannot be empty.</string>
+    <string name="valid_email_validation">This field cannot be empty.</string>
 </resources>
