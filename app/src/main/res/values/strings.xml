@@ -7,4 +7,6 @@
     <string name="tyc">By joining you agree to our <u>Terms &amp; Conditions</u></string>
     <string name="empty_validation">This field cannot be empty.</string>
     <string name="valid_email_validation">This field cannot be empty.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -1,7 +1,8 @@
-package com.example.wnews
+package com.example.wnews.viewModel
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.wnews.R
 
 class SignUpActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

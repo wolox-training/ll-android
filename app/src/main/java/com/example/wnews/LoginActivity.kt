@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.wnews.databinding.ActivityMainBinding
+import com.example.wnews.viewModel.SignUpActivity
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var mainViewModel: LoginViewModel
