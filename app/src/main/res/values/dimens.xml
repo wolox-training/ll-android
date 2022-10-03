@@ -8,10 +8,10 @@
     <dimen name="first_name_margin_top">10dp</dimen>
     <dimen name="edit_text_margin_horizontal">16dp</dimen>
     <dimen name="edit_text_margin_top">20dp</dimen>
-    <dimen name="footer_margin_bottom">12dp</dimen>
     <dimen name="login_button_margin_top">25dp</dimen>
     <dimen name="signup_button_margin_top">20dp</dimen>
     <dimen name="footer_text_size">16sp</dimen>
+    <dimen name="footer_margin_bottom">12dp</dimen>
     <dimen name="home_layout_whidth">300dp</dimen>
     <dimen name="home_margin_start">64dp</dimen>
     <dimen name="home_margin_top">340dp</dimen>
