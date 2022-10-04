@@ -47,7 +47,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.footer.setOnClickListener{
-            openWebPage("https://www.wolox.com.ar")
+            openWebPage(getString(R.string.wolox_page))
         }
     }
 
