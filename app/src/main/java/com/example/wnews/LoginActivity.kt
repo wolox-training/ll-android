@@ -107,7 +107,7 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(Intent.ACTION_VIEW, webpage)
         if (intent.resolveActivity(packageManager) != null) {
             startActivity(intent)
-        } else println("hola")
+        }
     }
 
     companion object {
@@ -118,8 +118,3 @@ class LoginActivity : AppCompatActivity() {
 
 
 }
-
-
-
-
-
