@@ -1,11 +1,12 @@
-package com.example.wnews
+package com.example.wnews.viewModel
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.wnews.R
 
-class HomeActivity : AppCompatActivity() {
+class SignUpActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        setContentView(R.layout.activity_sign_up)
     }
 }

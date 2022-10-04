@@ -4,7 +4,10 @@
     <string name="second_name_placeholder">"Last Name (Recomended)"</string>
     <string name="login_button">LOG IN</string>
     <string name="signup_button">SIGN UP</string>
-    <string name="tyc">By joining you agree to our Terms y Conditions</string>
+    <string name="tyc">By joining you agree to our <u>Terms &amp; Conditions</u></string>
     <string name="empty_validation">This field cannot be empty.</string>
     <string name="valid_email_validation">This field cannot be empty.</string>
+    <string name="wolox_page">"https://www.wolox.com.ar"</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

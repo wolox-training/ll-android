@@ -3,7 +3,7 @@ import androidx.lifecycle.ViewModel
 import com.example.wnews.model.LoginModel
 
 
-class MainViewModel : ViewModel() {
+class LoginViewModel : ViewModel() {
     private val loginModel: MutableLiveData<LoginModel> = MutableLiveData()
     val errorFirstName: MutableLiveData<Boolean> = MutableLiveData(false)
     val errorSecondName: MutableLiveData<Boolean> = MutableLiveData(false)

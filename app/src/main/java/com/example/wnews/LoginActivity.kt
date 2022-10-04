@@ -1,14 +1,16 @@
 package com.example.wnews
 
-import MainViewModel
+import LoginViewModel
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.wnews.databinding.ActivityMainBinding
+import com.example.wnews.viewModel.SignUpActivity
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var mainViewModel: MainViewModel
+class LoginActivity : AppCompatActivity() {
+    private lateinit var mainViewModel: LoginViewModel
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        mainViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
 
         binding.apply {
 
@@ -33,13 +35,20 @@ class MainActivity : AppCompatActivity() {
                 mainViewModel.validateSecondName(secondNameInput)
 
                 mainViewModel.successValidations()
-
-
             }
         }
 
         setObserve()
 
+        binding.signupButton.setOnClickListener {
+            with(Intent(this, SignUpActivity::class.java)) {
+                startActivity(this)
+            }
+        }
+
+        binding.footer.setOnClickListener{
+            openWebPage(getString(R.string.wolox_page))
+        }
     }
 
     fun setObserve() {
@@ -69,7 +78,6 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }
         }
-
     }
 
 
@@ -94,6 +102,14 @@ class MainActivity : AppCompatActivity() {
         return sharedPreferences.getString(PASSWORD, "")
     }
 
+    fun openWebPage(url: String) {
+        val webpage: Uri = Uri.parse(url)
+        val intent = Intent(Intent.ACTION_VIEW, webpage)
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
+        }
+    }
+
     companion object {
         private val SHARED_PREFS = "sharedPrefs"
         private val KEY_EMAIL = "keyEmail"
@@ -102,4 +118,3 @@ class MainActivity : AppCompatActivity() {
 
 
 }
-
