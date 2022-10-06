@@ -4,6 +4,7 @@ import LoginViewModel
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.wnews.databinding.ActivityMainBinding
@@ -39,19 +40,19 @@ class LoginActivity : AppCompatActivity() {
         }
 
         setObserve()
-
         binding.signupButton.setOnClickListener {
             with(Intent(this, SignUpActivity::class.java)) {
                 startActivity(this)
             }
         }
 
-        binding.footer.setOnClickListener{
+        binding.footer.setOnClickListener {
             openWebPage(getString(R.string.wolox_page))
         }
     }
 
     fun setObserve() {
+
         mainViewModel.errorFirstName.observe(this) {
             if (it) {
                 binding.firstName.error = getString(R.string.empty_validation)
@@ -70,14 +71,36 @@ class LoginActivity : AppCompatActivity() {
                     binding.firstName.editableText.toString(),
                     binding.secondName.editableText.toString()
                 )
-                with(Intent(this, HomeActivity::class.java)) {
-                    startActivity(this)
-
-                }
-
-                finish()
+                mainViewModel.apiLogin(
+                    binding.firstName.editableText.toString(),
+                    binding.secondName.editableText.toString()
+                )
             }
         }
+
+        mainViewModel.userLogged()
+
+        mainViewModel.userIsAuth.observe(this){
+            if(it == true){
+                with(Intent(this, HomeActivity::class.java)) {
+                    startActivity(this)
+                }
+            }
+        }
+
+        mainViewModel.apiResult.observe(this) {
+            when (it) {
+                true -> {
+                    with(Intent(this, HomeActivity::class.java)) {
+                        startActivity(this)
+                    }
+                }
+
+                 false -> { Toast.makeText(this, getString(R.string.failed_login), Toast.LENGTH_SHORT).show() }
+
+            }
+        }
+
     }
 
 
