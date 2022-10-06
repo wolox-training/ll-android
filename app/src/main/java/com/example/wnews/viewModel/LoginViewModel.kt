@@ -12,7 +12,7 @@ class LoginViewModel : ViewModel() {
     val errorFirstName: MutableLiveData<Boolean> = MutableLiveData(false)
     val errorSecondName: MutableLiveData<Boolean> = MutableLiveData(false)
     val valditionsResult: MutableLiveData<Boolean> = MutableLiveData(false)
-    val apiResult: MutableLiveData<Boolean> = MutableLiveData(false)
+    val apiResult: MutableLiveData<Boolean> = MutableLiveData(null)
     val repository: LoginRepository = LoginRepository()
 
 
@@ -46,9 +46,7 @@ class LoginViewModel : ViewModel() {
     fun apiLogin(email: String, password: String) {
         viewModelScope.launch {
             val result = repository.loginWithUser(email, password)
-            if (result.isSuccessful) {
-                apiResult.value = true
-            }
+            apiResult.value = result.isSuccessful
         }
     }
 }

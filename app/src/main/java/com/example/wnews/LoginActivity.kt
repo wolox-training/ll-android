@@ -78,12 +78,15 @@ class LoginActivity : AppCompatActivity() {
             }
         }
         mainViewModel.apiResult.observe(this) {
-            if (it == true) {
-                with(Intent(this, HomeActivity::class.java)) {
-                    startActivity(this)
+            when (it) {
+                true -> {
+                    with(Intent(this, HomeActivity::class.java)) {
+                        startActivity(this)
+                    }
                 }
-            } else {
-                Toast.makeText(this, getString(R.string.failed_login), Toast.LENGTH_SHORT).show()
+
+                 false -> { Toast.makeText(this, getString(R.string.failed_login), Toast.LENGTH_SHORT).show() }
+
             }
         }
 
