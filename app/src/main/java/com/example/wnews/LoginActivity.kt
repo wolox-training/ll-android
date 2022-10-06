@@ -22,6 +22,15 @@ class LoginActivity : AppCompatActivity() {
 
         mainViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
 
+        mainViewModel.userLogged()
+        mainViewModel.userIsAuth.observe(this){
+            if(it == true){
+                with(Intent(this, HomeActivity::class.java)) {
+                    startActivity(this)
+                }
+            }
+        }
+
         binding.apply {
 
 
@@ -53,6 +62,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun setObserve() {
+
         mainViewModel.errorFirstName.observe(this) {
             if (it) {
                 binding.firstName.error = getString(R.string.empty_validation)
