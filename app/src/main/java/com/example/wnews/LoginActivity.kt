@@ -22,15 +22,6 @@ class LoginActivity : AppCompatActivity() {
 
         mainViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
 
-        mainViewModel.userLogged()
-        mainViewModel.userIsAuth.observe(this){
-            if(it == true){
-                with(Intent(this, HomeActivity::class.java)) {
-                    startActivity(this)
-                }
-            }
-        }
-
         binding.apply {
 
 
@@ -49,7 +40,6 @@ class LoginActivity : AppCompatActivity() {
         }
 
         setObserve()
-
         binding.signupButton.setOnClickListener {
             with(Intent(this, SignUpActivity::class.java)) {
                 startActivity(this)
@@ -87,6 +77,17 @@ class LoginActivity : AppCompatActivity() {
                 )
             }
         }
+
+        mainViewModel.userLogged()
+
+        mainViewModel.userIsAuth.observe(this){
+            if(it == true){
+                with(Intent(this, HomeActivity::class.java)) {
+                    startActivity(this)
+                }
+            }
+        }
+
         mainViewModel.apiResult.observe(this) {
             when (it) {
                 true -> {
