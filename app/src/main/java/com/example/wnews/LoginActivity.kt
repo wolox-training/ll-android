@@ -1,9 +1,13 @@
 package com.example.wnews
 
 import LoginViewModel
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -71,17 +75,24 @@ class LoginActivity : AppCompatActivity() {
                     binding.firstName.editableText.toString(),
                     binding.secondName.editableText.toString()
                 )
-                mainViewModel.apiLogin(
-                    binding.firstName.editableText.toString(),
-                    binding.secondName.editableText.toString()
-                )
+                val cm = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+                val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
+
+                if (isConnected) {
+                    mainViewModel.apiLogin(
+                        binding.firstName.editableText.toString(),
+                        binding.secondName.editableText.toString()
+                    )
+                } else { Toast.makeText(this, getString(R.string.no_internet), Toast.LENGTH_SHORT)
+                    .show() }
             }
         }
 
         mainViewModel.userLogged()
 
-        mainViewModel.userIsAuth.observe(this){
-            if(it == true){
+        mainViewModel.userIsAuth.observe(this) {
+            if (it == true) {
                 with(Intent(this, HomeActivity::class.java)) {
                     startActivity(this)
                 }
@@ -89,55 +100,66 @@ class LoginActivity : AppCompatActivity() {
         }
 
         mainViewModel.apiResult.observe(this) {
+
             when (it) {
                 true -> {
                     with(Intent(this, HomeActivity::class.java)) {
                         startActivity(this)
                     }
                 }
+                false -> {
+                    Toast.makeText(this, getString(R.string.failed_login), Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        }
+        mainViewModel.apiLoading.observe(this) {
+            when (it) {
+                true -> {
+                    binding.loadingSpinner.visibility = View.VISIBLE
+                }
+                false -> {
+                    binding.loadingSpinner.visibility = View.GONE
+                }
+            }
+        }
+    }
 
-                 false -> { Toast.makeText(this, getString(R.string.failed_login), Toast.LENGTH_SHORT).show() }
 
+        fun saveData(firstName: String, secondName: String) {
+            val sharedPreferences = this.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.putString(KEY_EMAIL, firstName)
+            editor.putString(PASSWORD, secondName)
+
+            editor.apply()
+        }
+
+        fun loadData(): String? {
+            val sharedPreferences =
+                this.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
+            return sharedPreferences.getString(KEY_EMAIL, "")
+        }
+
+        fun loadDataPassword(): String? {
+            val sharedPreferences =
+                this.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
+            return sharedPreferences.getString(PASSWORD, "")
+        }
+
+        fun openWebPage(url: String) {
+            val webpage: Uri = Uri.parse(url)
+            val intent = Intent(Intent.ACTION_VIEW, webpage)
+            if (intent.resolveActivity(packageManager) != null) {
+                startActivity(intent)
             }
         }
 
-    }
-
-
-    fun saveData(firstName: String, secondName: String) {
-        val sharedPreferences = this.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putString(KEY_EMAIL, firstName)
-        editor.putString(PASSWORD, secondName)
-
-        editor.apply()
-    }
-
-    fun loadData(): String? {
-        val sharedPreferences =
-            this.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
-        return sharedPreferences.getString(KEY_EMAIL, "")
-    }
-
-    fun loadDataPassword(): String? {
-        val sharedPreferences =
-            this.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
-        return sharedPreferences.getString(PASSWORD, "")
-    }
-
-    fun openWebPage(url: String) {
-        val webpage: Uri = Uri.parse(url)
-        val intent = Intent(Intent.ACTION_VIEW, webpage)
-        if (intent.resolveActivity(packageManager) != null) {
-            startActivity(intent)
+        companion object {
+            private val SHARED_PREFS = "sharedPrefs"
+            private val KEY_EMAIL = "keyEmail"
+            private val PASSWORD = "password"
         }
+
+
     }
-
-    companion object {
-        private val SHARED_PREFS = "sharedPrefs"
-        private val KEY_EMAIL = "keyEmail"
-        private val PASSWORD = "password"
-    }
-
-
-}

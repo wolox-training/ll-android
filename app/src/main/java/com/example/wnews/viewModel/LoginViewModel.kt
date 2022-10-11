@@ -9,6 +9,7 @@ import com.example.wnews.LoginActivity
 import com.example.wnews.model.LoginData
 import com.example.wnews.model.LoginModel
 import com.example.wnews.viewModel.LoginRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -17,7 +18,8 @@ class LoginViewModel (private val app:Application ): AndroidViewModel(app) {
     val errorFirstName: MutableLiveData<Boolean> = MutableLiveData(false)
     val errorSecondName: MutableLiveData<Boolean> = MutableLiveData(false)
     val valditionsResult: MutableLiveData<Boolean> = MutableLiveData(false)
-    val apiResult: MutableLiveData<Boolean> = MutableLiveData(null)
+    val apiResult: MutableLiveData<Boolean> = MutableLiveData()
+    val apiLoading: MutableLiveData<Boolean> = MutableLiveData()
     val repository: LoginRepository = LoginRepository()
     lateinit var sharedPreferences : SharedPreferences
     val userIsAuth : MutableLiveData<Boolean> = MutableLiveData(null)
@@ -59,9 +61,11 @@ class LoginViewModel (private val app:Application ): AndroidViewModel(app) {
         }
 
     fun apiLogin(email: String, password: String) {
+        apiLoading.value = true
         viewModelScope.launch {
             val result = repository.loginWithUser(email, password)
             apiResult.value = result.isSuccessful
+            apiLoading.value = false
         }
     }
 
