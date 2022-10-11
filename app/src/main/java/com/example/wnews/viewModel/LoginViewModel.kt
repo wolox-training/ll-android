@@ -63,7 +63,6 @@ class LoginViewModel (private val app:Application ): AndroidViewModel(app) {
     fun apiLogin(email: String, password: String) {
         apiLoading.value = true
         viewModelScope.launch {
-            delay(2000)
             val result = repository.loginWithUser(email, password)
             apiResult.value = result.isSuccessful
             apiLoading.value = false

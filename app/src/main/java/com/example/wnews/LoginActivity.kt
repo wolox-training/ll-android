@@ -99,7 +99,7 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        mainViewModel.apiResult!!.observe(this) {
+        mainViewModel.apiResult.observe(this) {
 
             when (it) {
                 true -> {
