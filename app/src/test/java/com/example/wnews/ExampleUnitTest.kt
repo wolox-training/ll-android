@@ -1,17 +1,28 @@
 package com.example.wnews
 
-import org.junit.Test
-
+import LoginViewModel
+import com.example.wnews.viewModel.LoginRepository
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
+import org.junit.Before
+import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
+
 class ExampleUnitTest {
-    @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    lateinit var loginRepository : LoginRepository
+
+    @Before
+    fun setUp() {
+        loginRepository = LoginRepository()
     }
+    @Test
+    fun test1(){
+        runBlocking { val test = loginRepository.loginWithUser("test", "")
+        val result = !test.isSuccessful
+            assert(result)
+        }
+
+    }
+
 }

@@ -1,12 +1,14 @@
 package com.example.wnews
 
-import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.core.app.launchActivity
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
-
+import androidx.test.platform.app.InstrumentationRegistry
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
-
-import org.junit.Assert.*
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -20,5 +22,14 @@ class ExampleInstrumentedTest {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("com.example.wnews", appContext.packageName)
+    }
+
+    @Test
+    fun validationsTest() {
+        val activity = launchActivity<LoginActivity>()
+        activity.onActivity { activity ->
+            onView(withId(R.id.loginButton)).perform(click())
+            activity.finish()
+        }
     }
 }
