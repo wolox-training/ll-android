@@ -1,5 +1,6 @@
 package com.example.wnews
 
+import android.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.viewpager.widget.ViewPager
@@ -16,6 +17,13 @@ class HomeActivity : AppCompatActivity() {
         val tabLayout = findViewById<TabLayout>(R.id.tabLayout)
         tabLayout.setupWithViewPager(viewPager)
 
+        tabLayout.getTabAt(0)!!.setIcon(R.mipmap.ic_news_list_on)
+
+        tabLayout.getTabAt(1)!!.setIcon(R.mipmap.ic_profile_on)
+
     }
 }
+
+
+
 
