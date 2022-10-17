@@ -6,11 +6,4 @@
     android:layout_height="match_parent"
     tools:context=".NewsFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textColor="@color/green"
-        android:textSize="50dp"
-        android:text="GFG 1" />
-
 </FrameLayout>

@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 
 class PageAdapter(fm:FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getCount(): Int {
-        return 3;
+        return 2;
     }
 
     override fun getItem(position: Int): Fragment {
@@ -28,13 +28,10 @@ class PageAdapter(fm:FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getPageTitle(position: Int): CharSequence? {
         when(position) {
             0 -> {
-                return "Tab 1"
+                return "News"
             }
             1 -> {
-                return "Tab 2"
-            }
-            2 -> {
-                return "Tab 3"
+                return "Profile"
             }
         }
         return super.getPageTitle(position)
