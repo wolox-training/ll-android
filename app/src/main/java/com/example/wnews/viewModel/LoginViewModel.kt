@@ -3,13 +3,9 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.wnews.LoginActivity
-import com.example.wnews.model.LoginData
 import com.example.wnews.model.LoginModel
 import com.example.wnews.viewModel.LoginRepository
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -19,10 +15,13 @@ class LoginViewModel (private val app:Application ): AndroidViewModel(app) {
     val errorSecondName: MutableLiveData<Boolean> = MutableLiveData(false)
     val valditionsResult: MutableLiveData<Boolean> = MutableLiveData(false)
     val apiResult: MutableLiveData<Boolean> = MutableLiveData()
+    val headersList : MutableLiveData<List<String>> = MutableLiveData()
+    val userId : MutableLiveData<Int> = MutableLiveData()
     val apiLoading: MutableLiveData<Boolean> = MutableLiveData()
     val repository: LoginRepository = LoginRepository()
     lateinit var sharedPreferences : SharedPreferences
     val userIsAuth : MutableLiveData<Boolean> = MutableLiveData(null)
+
 
     fun userLogged (){
         sharedPreferences =  app.getSharedPreferences("sharedPrefs", AppCompatActivity.MODE_PRIVATE)
@@ -31,8 +30,9 @@ class LoginViewModel (private val app:Application ): AndroidViewModel(app) {
         if(userEmail!!.isNotEmpty() && userPassword!!.isNotEmpty()) {
             userIsAuth.value = true
         }
-
     }
+
+
     fun setLogin(firstName: String, secondName: String) {
         loginModel.value = LoginModel(firstName, secondName)
     }
@@ -66,9 +66,20 @@ class LoginViewModel (private val app:Application ): AndroidViewModel(app) {
             val result = repository.loginWithUser(email, password)
             apiResult.value = result.isSuccessful
             apiLoading.value = false
+
+
+            val accessToken = result.headers().get(name = "Access-Token").toString()
+            val uid = result.headers().get(name = "Uid").toString()
+            val client = result.headers().get(name = "Client").toString()
+            val id = result.body()!!.data.id
+            userId.value = id
+
+            headersList.value = listOf(accessToken, uid, client)
+
         }
     }
 
 }
+
 
 

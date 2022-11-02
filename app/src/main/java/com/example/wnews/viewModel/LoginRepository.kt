@@ -10,7 +10,7 @@ import retrofit2.Response
 
 class LoginRepository {
     val service: LoginApi =
-        ApiBuilder("https://w-android-training.herokuapp.com").create(LoginApi::class.java)
+        ApiBuilder("https://w-android-traning-backup2.herokuapp.com").create(LoginApi::class.java)
 
     suspend fun loginWithUser(email: String, password: String): Response<LoginData> =
         withContext(Dispatchers.IO) {

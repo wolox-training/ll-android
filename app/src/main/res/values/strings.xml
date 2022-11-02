@@ -14,6 +14,7 @@
     <string name="no_internet">Please, verify your internet connection and try again.</string>
     <string name="tab1">News</string>
     <string name="tab2">Profile</string>
+    <string name="e401">Unauthorized</string>
 
 
 

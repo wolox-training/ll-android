@@ -14,8 +14,11 @@ data class Data(
     val email: String,
     @SerializedName("provider")
     val provider: String,
+    @SerializedName("access_token")
+    val accessToken: String,
     @SerializedName("uid")
     val uid: String,
+    val client: String,
     @SerializedName("allow_password_change")
     val allow_password_change: Boolean,
     @SerializedName("name")

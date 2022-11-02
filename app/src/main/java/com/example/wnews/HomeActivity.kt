@@ -1,13 +1,29 @@
 package com.example.wnews
 
-import android.app.ActionBar
-import androidx.appcompat.app.AppCompatActivity
+import LoginViewModel
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import com.example.wnews.databinding.ActivityHomeBinding
+import com.example.wnews.databinding.ActivityMainBinding
+import com.example.wnews.model.News
+import com.example.wnews.viewModel.NewsViewModel
 import com.google.android.material.tabs.TabLayout
 
+
 class HomeActivity : AppCompatActivity() {
+    lateinit var binding: ActivityHomeBinding
+    lateinit var mainViewModel: NewsViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+        mainViewModel = ViewModelProvider(this)[NewsViewModel::class.java]
+        val elements: Array<Int> = emptyArray()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
@@ -21,8 +37,13 @@ class HomeActivity : AppCompatActivity() {
 
         tabLayout.getTabAt(1)!!.setIcon(R.mipmap.ic_profile_on)
 
+        }
     }
-}
+
+
+
+
+
 
 
 
