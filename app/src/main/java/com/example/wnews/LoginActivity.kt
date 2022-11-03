@@ -28,7 +28,6 @@ class LoginActivity : AppCompatActivity() {
 
         binding.apply {
 
-
             loginButton.setOnClickListener {
                 val firstNameInput = firstName.editableText.toString()
                 val secondNameInput = secondName.editableText.toString()
@@ -84,8 +83,12 @@ class LoginActivity : AppCompatActivity() {
                         binding.firstName.editableText.toString(),
                         binding.secondName.editableText.toString()
                     )
-                } else { Toast.makeText(this, getString(R.string.no_internet), Toast.LENGTH_SHORT)
-                    .show() }
+
+
+                } else {
+                    Toast.makeText(this, getString(R.string.no_internet), Toast.LENGTH_SHORT)
+                        .show()
+                }
             }
         }
 
@@ -123,43 +126,61 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
+
+        mainViewModel.headersList.observe(this) {
+            val token = it.get(0)
+            val uid = it.get(1)
+            val client = it.get(2)
+            saveHeaders(token, uid, client)
+        }
+
+        mainViewModel.userId.observe(this) {
+                saveId(it)
+        }
+    }
+
+    fun saveHeaders(token: String, uid: String, client: String) {
+        val sharedPreferences = this.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
+
+        val editor = sharedPreferences.edit()
+        editor.putString(ACCESS_TOKEN, token)
+        editor.putString(UID, uid)
+        editor.putString(CLIENT, client)
+        editor.apply()
+    }
+
+    fun saveData(firstName: String, secondName: String) {
+        val sharedPreferences = this.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString(KEY_EMAIL, firstName)
+        editor.putString(PASSWORD, secondName)
+        editor.apply()
+    }
+
+    fun saveId( id : Int) {
+        val sharedPreferences = this.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putInt(USER_ID, id)
+
+        editor.apply()
     }
 
 
-        fun saveData(firstName: String, secondName: String) {
-            val sharedPreferences = this.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
-            val editor = sharedPreferences.edit()
-            editor.putString(KEY_EMAIL, firstName)
-            editor.putString(PASSWORD, secondName)
-
-            editor.apply()
+    fun openWebPage(url: String) {
+        val webpage: Uri = Uri.parse(url)
+        val intent = Intent(Intent.ACTION_VIEW, webpage)
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
         }
-
-        fun loadData(): String? {
-            val sharedPreferences =
-                this.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
-            return sharedPreferences.getString(KEY_EMAIL, "")
-        }
-
-        fun loadDataPassword(): String? {
-            val sharedPreferences =
-                this.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
-            return sharedPreferences.getString(PASSWORD, "")
-        }
-
-        fun openWebPage(url: String) {
-            val webpage: Uri = Uri.parse(url)
-            val intent = Intent(Intent.ACTION_VIEW, webpage)
-            if (intent.resolveActivity(packageManager) != null) {
-                startActivity(intent)
-            }
-        }
-
-        companion object {
-            private val SHARED_PREFS = "sharedPrefs"
-            private val KEY_EMAIL = "keyEmail"
-            private val PASSWORD = "password"
-        }
-
-
     }
+
+    companion object {
+        private val SHARED_PREFS = "sharedPrefs"
+        private val KEY_EMAIL = "keyEmail"
+        private val PASSWORD = "password"
+        private val ACCESS_TOKEN = "Access-Token"
+        private val UID = "Uid"
+        private val CLIENT = "Client"
+        private val USER_ID = "id"
+    }
+}

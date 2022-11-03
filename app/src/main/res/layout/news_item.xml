@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/card_view_height"
+    android:layout_margin="@dimen/card_layout_margin"
+    app:cardElevation="@dimen/card_elevation">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginVertical="@dimen/card_layout_margin_vertical"
+        android:padding="@dimen/constraint_layout_padding">
+
+        <ImageView
+            android:id="@+id/newsImage"
+            android:layout_width="@dimen/image_card_width"
+            android:layout_height="@dimen/image_card_height"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+        <TextView
+            android:id="@+id/commenter"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/commenter_layout_height"
+            android:layout_marginLeft="@dimen/commenter_margin_left"
+            android:text="Item"
+            android:textSize="@dimen/commenter_text_size"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/newsImage"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+
+        <TextView
+            android:id="@+id/comment"
+            android:ellipsize="end"
+            android:maxLength="125"
+            android:text="Item"
+            android:layout_width="@dimen/comment_layout_width"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/comment_layout_margin_left"
+            app:layout_constraintStart_toEndOf="@+id/newsImage"
+            app:layout_constraintTop_toBottomOf="@+id/commenter"
+            app:layout_constraintRight_toRightOf="@+id/newsImage">
+        </TextView>
+
+
+
+        <Button
+            android:id="@+id/likeButton"
+            android:background="@mipmap/ic_like_off"
+            android:layout_width="@dimen/button_whidth"
+            android:layout_height="@dimen/button_height"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="@dimen/button_margin"
+            app:layout_constraintStart_toEndOf="@id/comment"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
+</layout>

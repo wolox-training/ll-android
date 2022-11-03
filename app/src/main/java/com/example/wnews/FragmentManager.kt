@@ -3,8 +3,6 @@ package com.example.wnews
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import android.view.LayoutInflater
-
 
 class PageAdapter(fm:FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getCount(): Int {
@@ -36,5 +34,4 @@ class PageAdapter(fm:FragmentManager) : FragmentPagerAdapter(fm) {
         }
         return super.getPageTitle(position)
     }
-
 }

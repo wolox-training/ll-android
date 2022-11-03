@@ -13,3 +13,4 @@ interface LoginApi {
     suspend fun login (@Body loginModel: LoginModel) : Response <LoginData>
 
 }
+
