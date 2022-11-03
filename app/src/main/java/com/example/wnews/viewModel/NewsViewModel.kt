@@ -20,11 +20,11 @@ class NewsViewModel(private val app: Application) : AndroidViewModel(app) {
 
         fun getNews() {
             sharedPreferences =
-                app.getSharedPreferences("sharedPrefs", AppCompatActivity.MODE_PRIVATE)
-            val token = sharedPreferences.getString("Access-Token", "").toString()
-            val uid = sharedPreferences.getString("Uid", "").toString()
-            val client = sharedPreferences.getString("Client", "").toString()
-            val id = sharedPreferences.getInt("id", 0)
+                app.getSharedPreferences(SHARED_PREFS, AppCompatActivity.MODE_PRIVATE)
+            val token = sharedPreferences.getString(ACCESS_TOKEN, "").toString()
+            val uid = sharedPreferences.getString(UID, "").toString()
+            val client = sharedPreferences.getString(CLIENT, "").toString()
+            val id = sharedPreferences.getInt(USER_ID, 0)
             userId.value = id
             viewModelScope.launch {
                 val apiResult = response.getNews(accessToken = token, uid = uid, client = client)
@@ -34,12 +34,22 @@ class NewsViewModel(private val app: Application) : AndroidViewModel(app) {
                     val data = apiResult.body()
                     apiNewsResult.value = data!!
                 } else if (apiResult.code() == 401) {
-                    println("Unauthorized")
+                    println(UNAUTHORIZED)
 
-                } else println("No news to view")
+                } else println(ERROR)
             }
         }
-}
+    companion object {
+        private val SHARED_PREFS = "sharedPrefs"
+        private val ACCESS_TOKEN = "Access-Token"
+        private val UID = "Uid"
+        private val CLIENT = "Client"
+        private val USER_ID = "id"
+        private val UNAUTHORIZED = "Unauthorized"
+        private val ERROR = "No news to view"
+    }
+    }
+
 
 
 

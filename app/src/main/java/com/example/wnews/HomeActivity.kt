@@ -20,10 +20,7 @@ class HomeActivity : AppCompatActivity() {
     lateinit var mainViewModel: NewsViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityHomeBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
         mainViewModel = ViewModelProvider(this)[NewsViewModel::class.java]
-        val elements: Array<Int> = emptyArray()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
@@ -39,12 +36,3 @@ class HomeActivity : AppCompatActivity() {
 
         }
     }
-
-
-
-
-
-
-
-
-

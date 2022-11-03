@@ -38,8 +38,6 @@ class LoginActivity : AppCompatActivity() {
 
                 mainViewModel.validateSecondName(secondNameInput)
 
-
-
                 mainViewModel.successValidations()
             }
         }
@@ -126,7 +124,6 @@ class LoginActivity : AppCompatActivity() {
                 false -> {
                     binding.loadingSpinner.visibility = View.GONE
                 }
-
             }
         }
 
@@ -134,17 +131,13 @@ class LoginActivity : AppCompatActivity() {
             val token = it.get(0)
             val uid = it.get(1)
             val client = it.get(2)
-
             saveHeaders(token, uid, client)
         }
 
         mainViewModel.userId.observe(this) {
                 saveId(it)
-            println(it)
-
         }
     }
-
 
     fun saveHeaders(token: String, uid: String, client: String) {
         val sharedPreferences = this.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
@@ -153,19 +146,14 @@ class LoginActivity : AppCompatActivity() {
         editor.putString(ACCESS_TOKEN, token)
         editor.putString(UID, uid)
         editor.putString(CLIENT, client)
-
-
         editor.apply()
-
     }
 
     fun saveData(firstName: String, secondName: String) {
         val sharedPreferences = this.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
-
         val editor = sharedPreferences.edit()
         editor.putString(KEY_EMAIL, firstName)
         editor.putString(PASSWORD, secondName)
-
         editor.apply()
     }
 
@@ -175,18 +163,6 @@ class LoginActivity : AppCompatActivity() {
         editor.putInt(USER_ID, id)
 
         editor.apply()
-    }
-
-    fun loadData(): String? {
-        val sharedPreferences =
-            this.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
-        return sharedPreferences.getString(KEY_EMAIL, "")
-    }
-
-    fun loadDataPassword(): String? {
-        val sharedPreferences =
-            this.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
-        return sharedPreferences.getString(PASSWORD, "")
     }
 
 
@@ -206,7 +182,5 @@ class LoginActivity : AppCompatActivity() {
         private val UID = "Uid"
         private val CLIENT = "Client"
         private val USER_ID = "id"
-        private val LIKES = "likes"
     }
-
 }

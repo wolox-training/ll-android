@@ -42,7 +42,6 @@ class NewsFragment : Fragment()  {
         val onCellClickListener = { pressed: News ->
             mainViewModel.isPressedFav.value = !mainViewModel.isPressedFav.value!!
            val newTest =mainViewModel.apiNewsResult.value?.data?.find { new: News -> new == pressed }?.commenter
-            println(newTest)
             Unit
         }
 
