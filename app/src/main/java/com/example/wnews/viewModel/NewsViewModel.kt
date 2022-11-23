@@ -6,8 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.recyclerview.widget.RecyclerView
-import com.example.wnews.databinding.NewsItemBinding
 import com.example.wnews.model.NewsData
 import kotlinx.coroutines.launch
 
@@ -15,6 +13,7 @@ class NewsViewModel(private val app: Application) : AndroidViewModel(app) {
     lateinit var sharedPreferences: SharedPreferences
         val apiNewsResult: MutableLiveData<NewsData> = MutableLiveData()
         var isPressedFav : MutableLiveData<Boolean> = MutableLiveData(false)
+        val pressedNewsId : MutableLiveData<Int> = MutableLiveData()
         val userId : MutableLiveData<Int> = MutableLiveData()
         val response = NewsRepository()
 
@@ -39,6 +38,21 @@ class NewsViewModel(private val app: Application) : AndroidViewModel(app) {
                 } else println(ERROR)
             }
         }
+
+        fun getLikes(newsId: Int) {
+            sharedPreferences =
+                app.getSharedPreferences(SHARED_PREFS, AppCompatActivity.MODE_PRIVATE)
+            val token = sharedPreferences.getString(ACCESS_TOKEN, "").toString()
+            val uid = sharedPreferences.getString(UID, "").toString()
+            val client = sharedPreferences.getString(CLIENT, "").toString()
+            var newsId = newsId
+            pressedNewsId.value = newsId
+
+            viewModelScope.launch {
+                val apiResult = response.getLikes(accessToken = token, uid = uid, client = client, newsId = newsId)
+            }
+        }
+
     companion object {
         private val SHARED_PREFS = "sharedPrefs"
         private val ACCESS_TOKEN = "Access-Token"

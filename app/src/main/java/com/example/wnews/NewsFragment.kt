@@ -1,9 +1,13 @@
 package com.example.wnews
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,11 +16,12 @@ import com.example.wnews.model.News
 import com.example.wnews.viewModel.NewsViewModel
 
 
-class NewsFragment : Fragment()  {
+class NewsFragment : Fragment() {
 
     lateinit var binding: FragmentNewsBinding
     lateinit var mainViewModel: NewsViewModel
-    lateinit var adapter : NewsAdapter
+    lateinit var adapter: NewsAdapter2
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,6 +30,7 @@ class NewsFragment : Fragment()  {
     ): View? {
         mainViewModel = ViewModelProvider(this)[NewsViewModel::class.java]
         binding = FragmentNewsBinding.inflate(inflater, container, false)
+
         val view = binding.root
         return view
     }
@@ -39,15 +45,28 @@ class NewsFragment : Fragment()  {
         val data = ArrayList<News>()
         println(data)
 
-        val onCellClickListener = { pressed: News ->
-            mainViewModel.isPressedFav.value = !mainViewModel.isPressedFav.value!!
-           val newTest =mainViewModel.apiNewsResult.value?.data?.find { new: News -> new == pressed }?.commenter
-            Unit
+
+        val CellClickListener = { pressedNews: News ->
+            mainViewModel.getLikes(pressedNews.id)
+
+            val pressedNewsId =
+                mainViewModel.apiNewsResult.value?.data?.find { new: News -> new == pressedNews }?.id
+            println(pressedNewsId)
         }
 
-        adapter = NewsAdapter(data, UserId = 0, cellClickListener = onCellClickListener )
 
-        mainViewModel.userId.observe(viewLifecycleOwner) {
+
+        adapter = NewsAdapter2(data, cellClickListener = CellClickListener)
+
+        adapter.run {
+
+            updateData(data)
+            notifyDataSetChanged()
+        }
+
+
+
+        mainViewModel.userId.observe(this.viewLifecycleOwner) {
             adapter.updateUser(it)
         }
 
@@ -57,11 +76,29 @@ class NewsFragment : Fragment()  {
                 binding.listRecyclerview.adapter?.notifyDataSetChanged()
             }
         }
+
+
+
         binding.listRecyclerview.adapter = adapter
 
-        binding.swipeRefreshLayout.setOnRefreshListener {
-            binding.swipeRefreshLayout.isRefreshing = true
-            binding.swipeRefreshLayout.isRefreshing = false
+
+        val cm = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+        val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
+
+        if (isConnected) {
+            binding.swipeRefreshLayout.setOnRefreshListener {
+                binding.swipeRefreshLayout.isRefreshing = true
+                mainViewModel.getNews()
+                binding.swipeRefreshLayout.isRefreshing = false
+            }
+
+        } else {
+            Toast.makeText(requireContext(), getString(R.string.no_internet), Toast.LENGTH_SHORT)
+                .show()
         }
     }
 }
+
+
+
