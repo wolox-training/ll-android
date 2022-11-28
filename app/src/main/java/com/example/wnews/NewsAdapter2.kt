@@ -1,7 +1,6 @@
 package com.example.wnews
 
 import android.os.Bundle
-import android.provider.SyncStateContract.Helpers.update
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -10,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.wnews.databinding.NewsItemBinding
 import com.example.wnews.model.News
-import okhttp3.internal.notify
 
 private const val ARG_DONE = "arg.done"
 
@@ -38,25 +36,24 @@ class DiffCallback : DiffUtil.ItemCallback<News>() {
     }
 }
 
-
-
-class NewsAdapter2 (private val items: ArrayList<News>, val cellClickListener: (news: News)->Unit) : ListAdapter<News,NewsAdapter2.NewsViewHolder>(DiffCallback()) {
+class NewsAdapter2(
+    private val items: ArrayList<News>,
+    val cellClickListener: (news: News) -> Unit
+) : ListAdapter<News, NewsAdapter2.NewsViewHolder>(DiffCallback()) {
 
     lateinit var binding: NewsItemBinding
 
-     var UserId : Int = 0
+    var UserId: Int = 0
 
     fun updateUser(userId: Int) {
         UserId = userId
-
     }
 
     fun updateData(arrayList: ArrayList<News>) {
         items.addAll(arrayList)
     }
 
-
-    class NewsViewHolder(binding: NewsItemBinding) : RecyclerView.ViewHolder( binding.root ){
+    class NewsViewHolder(binding: NewsItemBinding) : RecyclerView.ViewHolder(binding.root) {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
@@ -71,33 +68,33 @@ class NewsAdapter2 (private val items: ArrayList<News>, val cellClickListener: (
 
         val news = items[position]
 
-      fun test (position: Int) {
+        fun updateLikes(position: Int) {
 
-          val userLikes = news.likes.contains(UserId)
+            val userLikes = news.likes.contains(UserId)
 
-          if (userLikes) {
-              news.likes.remove(UserId)
-              binding.likeButton.setBackgroundResource(R.mipmap.ic_like_off)
-              notifyItemChanged(position)
-              getItemCount()
-              getItemViewType(position)
+            if (userLikes) {
+                news.likes.remove(UserId)
+                binding.likeButton.setBackgroundResource(R.mipmap.ic_like_off)
+                notifyItemChanged(position)
+                getItemCount()
+                getItemViewType(position)
 
-          } else {
-              news.likes.add(UserId)
-              binding.likeButton.setBackgroundResource(R.mipmap.ic_like_on)
-              notifyItemChanged(position)
-              getItemCount()
-              getItemViewType(position)
-          }
-      }
+            } else {
+                news.likes.add(UserId)
+                binding.likeButton.setBackgroundResource(R.mipmap.ic_like_on)
+                notifyItemChanged(position)
+                getItemCount()
+                getItemViewType(position)
+            }
+        }
 
         binding.commenter.text = news.commenter
         binding.comment.text = news.comment
 
 
-        binding.likeButton.setOnClickListener{
-             cellClickListener(news)
-            test(position)
+        binding.likeButton.setOnClickListener {
+            cellClickListener(news)
+            updateLikes(position)
         }
 
         Glide.with(binding.newsImage)
@@ -107,20 +104,18 @@ class NewsAdapter2 (private val items: ArrayList<News>, val cellClickListener: (
 
         val userLikes = news.likes.contains(UserId)
 
-        if (userLikes){
+        if (userLikes) {
             binding.likeButton.setBackgroundResource(R.mipmap.ic_like_on)
         }
 
     }
-
-
 
     override fun getItemCount(): Int = items.size
 
     override fun getItemViewType(position: Int): Int {
         return position
     }
-    }
+}
 
 
 

@@ -44,27 +44,10 @@ class NewsFragment : Fragment() {
         mainViewModel.getNews()
 
         val data = ArrayList<News>()
-        println(data)
-
 
         val CellClickListener = { pressedNews: News ->
             mainViewModel.getLikes(pressedNews.id)
         }
-
-
-       // val CellClickListener = { pressedNews: News ->
-       //     mainViewModel.updateOk.observe(this.viewLifecycleOwner){
-       //         if(it){
-       //             mainViewModel.getLikes(pressedNews.id)
-       //         } else println(it)
-       //     }
-       // }
-
-
-    //   val pressedNewsId =
-    //    mainViewModel.apiNewsResult.value?.data?.find { new: News -> new == pressedNews }?.id
-    //  println(pressedNewsId)
-
 
         adapter = NewsAdapter2(data, cellClickListener = CellClickListener)
 
@@ -87,8 +70,6 @@ class NewsFragment : Fragment() {
                 binding.listRecyclerview.adapter?.notifyDataSetChanged()
             }
         }
-
-
 
         binding.listRecyclerview.adapter = adapter
 
