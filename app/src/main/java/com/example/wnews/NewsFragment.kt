@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wnews.databinding.FragmentNewsBinding
 import com.example.wnews.model.News
 import com.example.wnews.viewModel.NewsViewModel
+import okhttp3.internal.notify
 
 
 class NewsFragment : Fragment() {
@@ -48,23 +49,35 @@ class NewsFragment : Fragment() {
 
         val CellClickListener = { pressedNews: News ->
             mainViewModel.getLikes(pressedNews.id)
+            val pressedNewsId : Int? = mainViewModel.pressedNewsId.value
+            if (pressedNewsId != null) {
+                mainViewModel.pressedNewsId.value?.let { adapter.updateLikes(it) }
+                mainViewModel.updateOk.observe(this.viewLifecycleOwner) {
+                    if (it) {
+                        adapter.updateView()
+                    }
+                }
+            }
 
-            val pressedNewsId =
-                mainViewModel.apiNewsResult.value?.data?.find { new: News -> new == pressedNews }?.id
-            println(pressedNewsId)
+         //   val pressedNewsId =
+            //    mainViewModel.apiNewsResult.value?.data?.find { new: News -> new == pressedNews }?.id
+          //  println(pressedNewsId)
         }
 
 
 
         adapter = NewsAdapter2(data, cellClickListener = CellClickListener)
 
-        adapter.run {
 
-            updateData(data)
-            notifyDataSetChanged()
+
+        mainViewModel.pressedNewsId.observe(this.viewLifecycleOwner){
+            adapter.run{
+                adapter.updateData(data)
+                getItemCount()
+                getItemViewType(itemCount)
+                println("holaaaaaaaaaa")
+            }
         }
-
-
 
         mainViewModel.userId.observe(this.viewLifecycleOwner) {
             adapter.updateUser(it)
@@ -72,7 +85,7 @@ class NewsFragment : Fragment() {
 
         mainViewModel.apiNewsResult.observe(this.viewLifecycleOwner) {
             if (it != null) {
-                adapter.updateData(it.data as ArrayList<News>)
+                adapter.updateData(it.data)
                 binding.listRecyclerview.adapter?.notifyDataSetChanged()
             }
         }

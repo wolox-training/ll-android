@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 class NewsViewModel(private val app: Application) : AndroidViewModel(app) {
     lateinit var sharedPreferences: SharedPreferences
         val apiNewsResult: MutableLiveData<NewsData> = MutableLiveData()
-        var isPressedFav : MutableLiveData<Boolean> = MutableLiveData(false)
+        var updateOk : MutableLiveData<Boolean> = MutableLiveData(false)
         val pressedNewsId : MutableLiveData<Int> = MutableLiveData()
         val userId : MutableLiveData<Int> = MutableLiveData()
         val response = NewsRepository()
@@ -50,7 +50,11 @@ class NewsViewModel(private val app: Application) : AndroidViewModel(app) {
 
             viewModelScope.launch {
                 val apiResult = response.getLikes(accessToken = token, uid = uid, client = client, newsId = newsId)
+                if (apiResult.code() == 200) {
+                    updateOk.value = true
+                }
             }
+
         }
 
     companion object {

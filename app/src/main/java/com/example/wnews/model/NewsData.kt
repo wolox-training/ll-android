@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class NewsData(
     @SerializedName("page")
-    val data: List<News>
+    val data: ArrayList<News>
 )
 
 data class News(
@@ -19,6 +19,7 @@ data class News(
     val createdAt: String,
     @SerializedName("updated_at")
     val updatedAt: String,
+    var done: Boolean = false
 )
 
 data class ApiMessage (
