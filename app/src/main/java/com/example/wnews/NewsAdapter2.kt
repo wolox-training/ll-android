@@ -56,27 +56,6 @@ class NewsAdapter2 (private val items: ArrayList<News>, val cellClickListener: (
     }
 
 
-    fun updateLikes (pressedNewsId: Int) {
-
-        val pressedNew = items[pressedNewsId]
-        pressedNew.likes.add(UserId)
-        binding.likeButton.setBackgroundResource(R.mipmap.ic_like_on)
-
-        if(pressedNew.likes.contains(UserId)) {
-            pressedNew.likes.remove(UserId)
-            binding.likeButton.setBackgroundResource(R.mipmap.ic_like_off)
-            }
-    }
-
-    fun updateView(){
-        updateData(items)
-        binding.likeButton.setBackgroundResource(R.mipmap.ic_like_off)
-        println("---------VIEW UPDATE----------")
-    }
-
-
-
-
     class NewsViewHolder(binding: NewsItemBinding) : RecyclerView.ViewHolder( binding.root ){
     }
 
@@ -92,15 +71,33 @@ class NewsAdapter2 (private val items: ArrayList<News>, val cellClickListener: (
 
         val news = items[position]
 
+      fun test (position: Int) {
+
+          val userLikes = news.likes.contains(UserId)
+
+          if (userLikes) {
+              news.likes.remove(UserId)
+              binding.likeButton.setBackgroundResource(R.mipmap.ic_like_off)
+              notifyItemChanged(position)
+              getItemCount()
+              getItemViewType(position)
+
+          } else {
+              news.likes.add(UserId)
+              binding.likeButton.setBackgroundResource(R.mipmap.ic_like_on)
+              notifyItemChanged(position)
+              getItemCount()
+              getItemViewType(position)
+          }
+      }
+
         binding.commenter.text = news.commenter
         binding.comment.text = news.comment
 
 
         binding.likeButton.setOnClickListener{
              cellClickListener(news)
-            updateView()
-            notifyItemChanged(position)
-
+            test(position)
         }
 
         Glide.with(binding.newsImage)
@@ -112,7 +109,7 @@ class NewsAdapter2 (private val items: ArrayList<News>, val cellClickListener: (
 
         if (userLikes){
             binding.likeButton.setBackgroundResource(R.mipmap.ic_like_on)
-        } else binding.likeButton.setBackgroundResource(R.mipmap.ic_like_off)
+        }
 
     }
 

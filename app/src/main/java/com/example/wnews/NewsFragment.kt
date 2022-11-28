@@ -49,25 +49,24 @@ class NewsFragment : Fragment() {
 
         val CellClickListener = { pressedNews: News ->
             mainViewModel.getLikes(pressedNews.id)
-            val pressedNewsId : Int? = mainViewModel.pressedNewsId.value
-            if (pressedNewsId != null) {
-                mainViewModel.pressedNewsId.value?.let { adapter.updateLikes(it) }
-                mainViewModel.updateOk.observe(this.viewLifecycleOwner) {
-                    if (it) {
-                        adapter.updateView()
-                    }
-                }
-            }
-
-         //   val pressedNewsId =
-            //    mainViewModel.apiNewsResult.value?.data?.find { new: News -> new == pressedNews }?.id
-          //  println(pressedNewsId)
         }
 
 
+       // val CellClickListener = { pressedNews: News ->
+       //     mainViewModel.updateOk.observe(this.viewLifecycleOwner){
+       //         if(it){
+       //             mainViewModel.getLikes(pressedNews.id)
+       //         } else println(it)
+       //     }
+       // }
+
+
+    //   val pressedNewsId =
+    //    mainViewModel.apiNewsResult.value?.data?.find { new: News -> new == pressedNews }?.id
+    //  println(pressedNewsId)
+
 
         adapter = NewsAdapter2(data, cellClickListener = CellClickListener)
-
 
 
         mainViewModel.pressedNewsId.observe(this.viewLifecycleOwner){
@@ -75,7 +74,6 @@ class NewsFragment : Fragment() {
                 adapter.updateData(data)
                 getItemCount()
                 getItemViewType(itemCount)
-                println("holaaaaaaaaaa")
             }
         }
 
