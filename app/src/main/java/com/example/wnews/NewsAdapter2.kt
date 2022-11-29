@@ -3,12 +3,14 @@ package com.example.wnews
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.wnews.databinding.NewsItemBinding
 import com.example.wnews.model.News
+import com.example.wnews.viewModel.NewsViewModel
 
 private const val ARG_DONE = "arg.done"
 
@@ -53,6 +55,28 @@ class NewsAdapter2(
         items.addAll(arrayList)
     }
 
+    fun updateLikes(position: Int) {
+
+        val news = items[position]
+
+        val userLikes = news.likes.contains(UserId)
+
+        if (userLikes) {
+            news.likes.remove(UserId)
+            binding.likeButton.setBackgroundResource(R.mipmap.ic_like_off)
+            notifyItemChanged(position)
+            getItemCount()
+            getItemViewType(position)
+
+        } else {
+            news.likes.add(UserId)
+            binding.likeButton.setBackgroundResource(R.mipmap.ic_like_on)
+            notifyItemChanged(position)
+            getItemCount()
+            getItemViewType(position)
+        }
+    }
+
     class NewsViewHolder(binding: NewsItemBinding) : RecyclerView.ViewHolder(binding.root) {
     }
 
@@ -68,25 +92,7 @@ class NewsAdapter2(
 
         val news = items[position]
 
-        fun updateLikes(position: Int) {
 
-            val userLikes = news.likes.contains(UserId)
-
-            if (userLikes) {
-                news.likes.remove(UserId)
-                binding.likeButton.setBackgroundResource(R.mipmap.ic_like_off)
-                notifyItemChanged(position)
-                getItemCount()
-                getItemViewType(position)
-
-            } else {
-                news.likes.add(UserId)
-                binding.likeButton.setBackgroundResource(R.mipmap.ic_like_on)
-                notifyItemChanged(position)
-                getItemCount()
-                getItemViewType(position)
-            }
-        }
 
         binding.commenter.text = news.commenter
         binding.comment.text = news.comment
