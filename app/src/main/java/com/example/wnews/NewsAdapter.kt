@@ -3,11 +3,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.wnews.databinding.FragmentNewsBinding
 import com.example.wnews.databinding.NewsItemBinding
 import com.example.wnews.model.News
 
 
-class NewsAdapter(private val mList: ArrayList<News> , private var UserId : Int,  private val cellClickListener: (news: News)->Unit) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>(){
+class NewsAdapter(private var mList: ArrayList<News>, private var UserId : Int, private val cellClickListener: (news: News)->Unit) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>(){
     lateinit var binding: NewsItemBinding
 
     fun updateUser (userId : Int) {
@@ -18,8 +19,35 @@ class NewsAdapter(private val mList: ArrayList<News> , private var UserId : Int,
         mList.addAll(arrayList)
     }
 
+    fun updateLikes (pressedNewsId: Int){
+        val cloneMlist : ArrayList<News> = mList.clone() as ArrayList<News>
+        println(cloneMlist)
+        mList.clear()
+        cloneMlist.forEach{
+            if(pressedNewsId == it.id){
+                it.likes.add(UserId)
+            }
+        }
+        updateData(cloneMlist)
+        notifyDataSetChanged()
+    }
+
+    fun removeLikes (pressedNewsId: Int){
+        val cloneMlist : ArrayList<News> = mList.clone() as ArrayList<News>
+        println(cloneMlist)
+        mList.clear()
+        cloneMlist.forEach{
+            if(pressedNewsId == it.id){
+                it.likes.remove(UserId)
+            }
+        }
+        updateData(cloneMlist)
+        notifyDataSetChanged()
+    }
+
     class NewsViewHolder(binding: NewsItemBinding) : RecyclerView.ViewHolder( binding.root ){
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
 
@@ -52,7 +80,5 @@ class NewsAdapter(private val mList: ArrayList<News> , private var UserId : Int,
         }
     }
 
-    override fun getItemCount(): Int {
-        return mList.size
-    }
+    override fun getItemCount(): Int = mList.size
 }
